@@ -11,6 +11,7 @@ html.css(".detroitnews-headline-grid-primary").each do |node|
   sections_html = Nokogiri::HTML(node.inner_html)
   sections_html.css(".hgpm-list-wrap").each do |node|
     title = node.css(".hgpm-list-hed").text
-    puts title, "\n\n"
+    description = node.css(".hgpm-back-listview-text").text
+    puts title, "\n", description, "\n\n"
   end
 end
