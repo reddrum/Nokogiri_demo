@@ -25,3 +25,18 @@ end
 load_page("#{@url}/hacktivity")
 count = 0
 
+while @url
+  @page.css("a").each do |link|
+    report = link["href"].match(/reports\/(\d+)/)[1].to_i if link["href"].match(/reports\/(\d+)/)
+    if report
+      if report > last_report
+        file.write("#{@url}#{link['href']},#{link.text}\n")
+        count += 1
+      elsif report <= last_report
+        file.close
+        p "Last report was #{last_report}, current report is #{report}. Exiting after adding #{count} new reports"
+        exit
+      end
+    end
+  end
+end  
