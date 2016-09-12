@@ -14,3 +14,14 @@ def load_page(page)
     exit
   end
 end
+
+file = open("hackerone_reports", "a+")
+begin
+  last_report = file.readline.match(/reports\/(\d+)/)[1].to_i
+rescue EOFError
+  last_report = 0
+end
+
+load_page("#{@url}/hacktivity")
+count = 0
+
