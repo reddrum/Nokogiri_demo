@@ -13,6 +13,12 @@ def load_page(page)
     puts "Socket Error: #{se}. Ending script."
     exit
   end
+
+  # if next_item = @page.css('a[rel="next"]')
+  #   @next_url = "#{@url}#{next_item.first["href"]}"
+  # else
+  #   @next_url = nil
+  # end
 end
 
 file = open("hackerone_reports", "a+")
@@ -22,7 +28,7 @@ rescue EOFError
   last_report = 0
 end
 
-load_page("#{@url}/hacktivity")
+load_page("#{@url}/hacktivity/popular")
 count = 0
 
 while @url
@@ -39,4 +45,6 @@ while @url
       end
     end
   end
-end  
+
+  # load_page(@next_url)
+end
