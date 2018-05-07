@@ -11,7 +11,7 @@ class Scraper
   def initialize
     headless = Headless.new
     headless.start
-    @browser = Watir::Browser.new(:chrome, switches: %w[--no-sandbox --disable-notifications])
+    @browser = Watir::Browser.new(:chrome, switches: %w[--no-sandbox --disable-notifications]) 
   end
 
   def end
@@ -46,7 +46,14 @@ class Scraper
 
       @browser.goto(district)
 
-      doc = Nokogiri::HTML.parse(browser.html)
+      count = 0
+      begin
+        doc = Nokogiri::HTML.parse(browser.html)
+      rescue Errno::ECONNRESET => e
+        count += 1
+        retry unless count > 10
+        puts "tried 10 times and couldn't get #{district}: #{e}"
+      end
 
       @browser.execute_script("window.scrollBy(0,200)")
       sleep(20)
@@ -57,23 +64,30 @@ class Scraper
       CSV.open("file.csv", "a+") do |csv|
         pages.each do |page|
 
-          sleep(4)
+          sleep(5)
+          
           @browser.buttons(:class, ['_2_I0uxAX1QTt_l4n _35LKst7i1uZi74JV _3Lpyrczb3U4kA1TV button--2C5U- simplified-button--i5Y-q']).each do |b|
-            sleep(1)
+            sleep(2)
             b.click
           end
+          
+          sleep(5)
 
           @browser.divs(:class, ['text--3FCIm simplified-text--26E8g']).each do |div|
-            sleep(1)
+            sleep(2)
             tels = p div.text
             csv << [tels]
           end
 
-          if @browser.div(:class, 'container--1LvHI').a(:text, "#{page}").exists?
+          if browser.div(:class, 'container--1LvHI').a(:text, "#{page}").present?
             @browser.div(:class, 'container--1LvHI').a(:text, "#{page}").click!
+          else
+            next
           end
         end
       end
+
+      puts "---------------NEXT_DISTRICT---------------"
       delay_time = rand(3)
       sleep(delay_time)  
     end
