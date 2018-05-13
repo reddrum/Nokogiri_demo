@@ -111,10 +111,66 @@ class Scraper
       sleep(delay_time)  
     end
   end
+
+  def house_scrape
+    puts "----------START HOUSE_SCRAPE----------"
+
+    house_url = ["https://www.cian.ru/cat.php?deal_type=sale&engine_version=2&is_by_homeowner=1&object_type%5B0%5D=1&offer_type=suburban&region=1",
+                 "https://www.cian.ru/cat.php?deal_type=sale&engine_version=2&is_by_homeowner=1&object_type%5B0%5D=2&offer_type=suburban&region=1",
+                 "https://www.cian.ru/cat.php?deal_type=sale&engine_version=2&is_by_homeowner=1&object_type%5B0%5D=4&offer_type=suburban&region=1",
+                 "https://www.cian.ru/cat.php?deal_type=sale&engine_version=2&is_by_homeowner=1&object_type%5B0%5D=3&offer_type=suburban&region=1"]
+
+    pages = (2..61).to_a
+
+    house_url.each do |url|
+
+      @browser.goto(url)
+
+      @browser.execute_script("window.scrollBy(0,200)")
+      sleep(20)
+      while @browser.div(:class, "button--3JzvW").exists?
+        @browser.div(:class, "button--3JzvW").click
+      end
+
+      CSV.open("file2.csv", "a+") do |csv|
+        pages.each do |page|
+
+          sleep(5)
+          
+          @browser.buttons(:class, ['_2_I0uxAX1QTt_l4n _35LKst7i1uZi74JV _3Lpyrczb3U4kA1TV button--2C5U- simplified-button--i5Y-q']).each do |b|
+            sleep(2)
+            b.click
+          end
+          
+          sleep(5)
+
+          @browser.divs(:class, ['text--3FCIm simplified-text--26E8g']).each do |div|
+            sleep(2)
+            tels = p div.text
+            csv << [tels]
+          end
+
+          if @browser.div(:class, 'container--1LvHI').a(:text, "#{page}").present?
+            @browser.div(:class, 'container--1LvHI').a(:text, "#{page}").click!
+          else
+            @browser.close
+            sleep(30)
+            @browser = Watir::Browser.new :firefox, profile: 'default', headless: true
+            break
+          end
+        end
+      end
+
+      puts "---------------NEXT---------------"
+      delay_time = rand(3)
+      sleep(delay_time)  
+    end  
+  end           
 end
 
 scraper = Scraper.new
 flat_tels = scraper.flat_scrape
+scraper.house_scrape
 scraper.end
 
 
