@@ -4,20 +4,36 @@ require 'watir'
 require 'csv'
 require 'headless'
 
+module Selenium
+  module WebDriver
+    module Remote
+      module Http
+        module DefaultExt
+          def request(*args)
+            tries ||= 3
+            super
+          rescue Net::ReadTimeout, Net::HTTPRequestTimeOut, Errno::ETIMEDOUT => ex
+            puts "#{ex.class} detected, retrying operation"
+            (tries -= 1).zero? ? raise : retry            
+          end
+        end
+      end
+    end
+  end
+end
+Selenium::WebDriver::Remote::Http::Default.prepend(Selenium::WebDriver::Remote::Http::DefaultExt)
+
 class Scraper
 
   attr_accessor :browser
 
   def initialize
-    headless = Headless.new
-    headless.start
-    @browser = Watir::Browser.new(:chrome, switches: %w[--no-sandbox --disable-notifications]) 
+    @browser = Watir::Browser.new :firefox, profile: 'default', headless: true
   end
 
   def end
     puts "-----------------END-----------------"
     @browser.close
-    headless.destroy
   end
 
 
@@ -79,10 +95,13 @@ class Scraper
             csv << [tels]
           end
 
-          if browser.div(:class, 'container--1LvHI').a(:text, "#{page}").present?
+          if @browser.div(:class, 'container--1LvHI').a(:text, "#{page}").present?
             @browser.div(:class, 'container--1LvHI').a(:text, "#{page}").click!
           else
-            next
+            @browser.close
+            sleep(30)
+            @browser = Watir::Browser.new :firefox, profile: 'default', headless: true
+            break
           end
         end
       end
