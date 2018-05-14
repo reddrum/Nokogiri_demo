@@ -77,7 +77,7 @@ class Scraper
       @browser.execute_script("window.scrollBy(0,200)")
       sleep(20)
       while @browser.div(:class, "button--3JzvW").exists?
-        @browser.div(:class, "button--3JzvW").click
+        @browser.div(:class, "button--3JzvW").fire_event('click')
       end
 
       CSV.open("file.csv", "a+") do |csv|
@@ -87,6 +87,7 @@ class Scraper
           
           @browser.buttons(:class, ['_2_I0uxAX1QTt_l4n _35LKst7i1uZi74JV _3Lpyrczb3U4kA1TV button--2C5U- simplified-button--i5Y-q']).each do |b|
             sleep(2)
+            @browser.button(:class, "cf-popup-close").fire_event('click') if @browser.button(:class, "cf-popup-close").exists?
             b.click
           end
           
@@ -132,7 +133,7 @@ class Scraper
       @browser.execute_script("window.scrollBy(0,200)")
       sleep(20)
       while @browser.div(:class, "button--3JzvW").exists?
-        @browser.div(:class, "button--3JzvW").click
+        @browser.div(:class, "button--3JzvW").fire_event('click')
       end
 
       CSV.open("file2.csv", "a+") do |csv|
@@ -142,6 +143,7 @@ class Scraper
           
           @browser.buttons(:class, ['_2_I0uxAX1QTt_l4n _35LKst7i1uZi74JV _3Lpyrczb3U4kA1TV button--2C5U- simplified-button--i5Y-q']).each do |b|
             sleep(2)
+            @browser.button(:class, "cf-popup-close").fire_event('click') if @browser.button(:class, "cf-popup-close").exists?
             b.click
           end
           
@@ -205,7 +207,7 @@ class Scraper
       @browser.execute_script("window.scrollBy(0,200)")
       sleep(20)
       while @browser.div(:class, "button--3JzvW").exists?
-        @browser.div(:class, "button--3JzvW").click
+        @browser.div(:class, "button--3JzvW").fire_event('click')
       end
 
       CSV.open("file3.csv", "a+") do |csv|
@@ -215,6 +217,7 @@ class Scraper
           
           @browser.buttons(:class, ['_2_I0uxAX1QTt_l4n _35LKst7i1uZi74JV _3Lpyrczb3U4kA1TV button--2C5U-']).each do |b|
             sleep(2)
+            @browser.button(:class, "cf-popup-close").fire_event('click') if @browser.button(:class, "cf-popup-close").exists?
             b.click
           end
           
