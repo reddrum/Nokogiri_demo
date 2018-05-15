@@ -28,7 +28,7 @@ class Scraper
   attr_accessor :browser
 
   def initialize
-    @browser = Watir::Browser.new :firefox, profile: 'default', headless: true
+    @browser = Watir::Browser.new :firefox, headless: true
   end
 
   def end
@@ -83,18 +83,18 @@ class Scraper
       CSV.open("file.csv", "a+") do |csv|
         pages.each do |page|
 
-          sleep(5)
+          sleep(3)
           
           @browser.buttons(:class, ['_2_I0uxAX1QTt_l4n _35LKst7i1uZi74JV _3Lpyrczb3U4kA1TV button--2C5U- simplified-button--i5Y-q']).each do |b|
-            sleep(2)
+            sleep(1)
             @browser.button(:class, "cf-popup-close").fire_event('click') if @browser.button(:class, "cf-popup-close").exists?
             b.click
           end
           
-          sleep(5)
+          sleep(3)
 
           @browser.divs(:class, ['text--3FCIm simplified-text--26E8g']).each do |div|
-            sleep(2)
+            sleep(1)
             tels = p div.text
             csv << [tels]
           end
@@ -104,7 +104,7 @@ class Scraper
           else
             @browser.close            
             sleep(30)
-            @browser = Watir::Browser.new :firefox, profile: 'default', headless: true
+            @browser = Watir::Browser.new :firefox, headless: true
             break
           end
         end
@@ -139,18 +139,18 @@ class Scraper
       CSV.open("file2.csv", "a+") do |csv|
         pages.each do |page|
 
-          sleep(5)
+          sleep(3)
           
           @browser.buttons(:class, ['_2_I0uxAX1QTt_l4n _35LKst7i1uZi74JV _3Lpyrczb3U4kA1TV button--2C5U- simplified-button--i5Y-q']).each do |b|
-            sleep(2)
+            sleep(1)
             @browser.button(:class, "cf-popup-close").fire_event('click') if @browser.button(:class, "cf-popup-close").exists?
             b.click
           end
           
-          sleep(5)
+          sleep(3)
 
           @browser.divs(:class, ['text--3FCIm simplified-text--26E8g']).each do |div|
-            sleep(2)
+            sleep(1)
             tels = p div.text
             csv << [tels]
           end
@@ -160,7 +160,7 @@ class Scraper
           else
             @browser.close
             sleep(30)
-            @browser = Watir::Browser.new :firefox, profile: 'default', headless: true
+            @browser = Watir::Browser.new :firefox, headless: true
             break
           end
         end
@@ -213,18 +213,18 @@ class Scraper
       CSV.open("file3.csv", "a+") do |csv|
         pages.each do |page|
 
-          sleep(5)
+          sleep(3)
           
           @browser.buttons(:class, ['_2_I0uxAX1QTt_l4n _35LKst7i1uZi74JV _3Lpyrczb3U4kA1TV button--2C5U-']).each do |b|
-            sleep(2)
+            sleep(1)
             @browser.button(:class, "cf-popup-close").fire_event('click') if @browser.button(:class, "cf-popup-close").exists?
             b.click
           end
           
-          sleep(5)
+          sleep(3)
 
           @browser.divs(:class, ['text--3FCIm']).each do |div|
-            sleep(2)
+            sleep(1)
             tels = p div.text
             csv << [tels]
           end
@@ -234,7 +234,7 @@ class Scraper
           else
             @browser.close
             sleep(30)
-            @browser = Watir::Browser.new :firefox, profile: 'default', headless: true
+            @browser = Watir::Browser.new :firefox, headless: true
             break
           end
         end
