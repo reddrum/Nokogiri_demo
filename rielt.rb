@@ -74,8 +74,8 @@ class Scraper
 
       @browser.execute_script("window.scrollBy(0,200)")
       sleep(20)
-      while @browser.div(:class, "button--3JzvW").exists?
-        @browser.div(:class, "button--3JzvW").fire_event('click')
+      while @browser.div(:class, "_93444fe79c-button--3JzvW").exists?
+        @browser.div(:class, "_93444fe79c-button--3JzvW").fire_event('click')
       end
 
       CSV.open("file4.csv", "a+") do |csv|
@@ -83,7 +83,7 @@ class Scraper
 
           sleep(3)
           
-          @browser.buttons(:class, ['_2_I0uxAX1QTt_l4n _35LKst7i1uZi74JV _3Lpyrczb3U4kA1TV button--2C5U- simplified-button--i5Y-q']).each do |b|
+          @browser.buttons(:class, ['button_component-button-eCvYMNeIZGW button_component-S-53KhykMSdyY button_component-default-55Cf8OHDN6g button_component-primary-5MrtQPVeXCA c6e8ba5398-button--3NqeV c6e8ba5398-simplified-button--2Iboi']).each do |b|
             sleep(1)
             @browser.button(:class, "cf-popup-close").fire_event('click') if @browser.button(:class, "cf-popup-close").exists?
             b.click
@@ -91,14 +91,14 @@ class Scraper
           
           sleep(3)
 
-          @browser.divs(:class, ['text--3FCIm simplified-text--26E8g']).each do |div|
+          @browser.divs(:class, ['c6e8ba5398-text--2b1-6 c6e8ba5398-simplified-text--1mkqT']).each do |div|
             sleep(1)
             tels = p div.text
             csv << [tels]
           end
 
-          if @browser.div(:class, 'container--1LvHI').a(:text, "#{page}").present?
-            @browser.div(:class, 'container--1LvHI').a(:text, "#{page}").click!
+          if @browser.div(:class, '_93444fe79c-container--1LvHI').a(:text, "#{page}").present?
+            @browser.div(:class, '_93444fe79c-container--1LvHI').a(:text, "#{page}").click!
           else
             @browser.close            
             sleep(30)
